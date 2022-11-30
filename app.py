@@ -72,13 +72,13 @@ class MoviesView(Resource):
         return "", 201
 
 
-@movie_ns.route("<int:uid>")
+@movie_ns.route("/<int:uid>")
 class MovieView(Resource):
     def get(self, uid:int):
         movie = db.session.query(Movie).get(uid)
         if not movie:
             return "", 404
-        return movies_schema.dump(Movie), 200
+        return movie_schema.dump(movie), 200
     def put (self, uid:int):
         updated_rows = db.session.query(Movie).filter(Movie.id == uid).update(request.json)
 
@@ -111,13 +111,13 @@ class DirectorsView(Resource):
         return "", 201
 
 
-@director_ns.route("<int:uid>")
+@director_ns.route("/<int:uid>")
 class DirectorView(Resource):
     def get(self, uid: int):
         director = db.session.query(Director).get(uid)
         if not director:
             return "", 404
-        return director_schema.dump(Director), 200
+        return director_schema.dump(director), 200
 
 
     def put(self, uid: int):
@@ -151,14 +151,14 @@ class GenresView(Resource):
         return "", 201
 
 
-@genre_ns.route("<int:uid>")
+@genre_ns.route("/<int:uid>")
 class GenreView(Resource):
     def get(self, uid: int):
         genre = db.session.query(Genre).get(uid)
         if not genre:
             return "", 404
 
-        return genre_schema.dump(Genre), 200
+        return genre_schema.dump(genre), 200
 
     def put(self, uid: int):
         updated_rows = db.session.query(Genre).filter(Genre.id == uid).update(request.json)

@@ -1,16 +1,8 @@
 # create_data.py
 
-# чтобы создать БД с данными 
+# чтобы создать БД с данными
 
-from flask import Flask, request
-from flask_restx import Api, Resource
-from flask_sqlalchemy import SQLAlchemy
-from marshmallow import Schema, fields
-
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy(app)
+from config import db, app
 
 
 class Movie(db.Model):
@@ -37,8 +29,10 @@ class Genre(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255))
 
-db.drop_all()
-db.create_all()
+app.app_context().push()
+with app.app_context():
+    db.drop_all()
+    db.create_all()
 
 # -------------------------------------------------------
 data = {
